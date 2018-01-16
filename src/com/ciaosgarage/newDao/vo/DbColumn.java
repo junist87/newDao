@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ColumnConfig {
+public @interface
+
+DbColumn {
     /**
      * 입력관련 속성을 지정한다.
      * InsertOnly : 입력만 가능하고 수정은 불가능하다
@@ -32,7 +34,7 @@ public @interface ColumnConfig {
      * 컬럼의 타입을 지정한다
      * PrimaryKey, ForeignKey, None 타입이 있다
      *
-     * @return the column type
+     * @return the com.ciaosgarage.com.test.column type
      */
     ColumnType columnType() default ColumnType.NONE;
 }

@@ -1,104 +1,204 @@
 package com.ciaosgarage.newDao.voHandler;
 
-import com.ciaosgarage.newDao.exceptions.NoExistPrimaryKeyFieldException;
+import com.ciaosgarage.newDao.exceptions.CantAccessFieldException;
+import com.ciaosgarage.newDao.exceptions.CantConstructVoException;
+import com.ciaosgarage.newDao.exceptions.CantFindVoInfoException;
 import com.ciaosgarage.newDao.vo.*;
+import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class VoHandlerImpl implements VoHandler {
 
+
     @Override
-    public Object getPrimaryKey(Table vo) throws NoExistPrimaryKeyFieldException {
+    public void setPk(Vo vo, Object value) throws CantAccessFieldException {
         try {
-            String fieldName = getPrimaryKeyFieldName(vo.getClass());
-            Field primaryKeyField = vo.getClass().getDeclaredField(fieldName);
-            primaryKeyField.setAccessible(true);
-            return primaryKeyField.get(vo);
+            Field field = this.getField("pk", vo.getClass());
+            field.set(vo, value);
         } catch (Exception e) {
-            throw new NoExistPrimaryKeyFieldException("!- Can't access primary key field");
+            // 예외전환
+            throw new CantAccessFieldException(e);
         }
     }
 
     @Override
-    public String getPrimaryKeyColumnName(Table vo) throws NoExistPrimaryKeyFieldException {
-        return null;
+    public Object getValue(Vo vo, String columnName) throws CantAccessFieldException {
+        try {
+            Field field = this.getField(columnName, vo.getClass());
+            return field.get(vo);
+        } catch (Exception e) {
+            // 예외전환
+            throw new CantAccessFieldException(e);
+        }
     }
 
     @Override
-    public String getPrimaryKeyColumnName(Class voInfo) throws NoExistPrimaryKeyFieldException {
-        return null;
+    public void setValue(Vo vo, String columnName, Object value) throws CantAccessFieldException {
+        try {
+            Field field = this.getField(columnName, vo.getClass());
+            field.set(vo, value);
+        } catch (Exception e) {
+            // 예외전환
+            throw new CantAccessFieldException(e);
+        }
     }
 
-    @Override
-    public void setPrimaryKey(Table vo, Object value) throws NoExistPrimaryKeyFieldException {
-
-    }
 
     @Override
-    public Object getValue(Table vo, String columnName) {
-        return null;
-    }
+    public List<Column> transformToList(Vo vo) throws CantAccessFieldException {
+        List<Column> list = new ArrayList<>();
+        Class voInfo = vo.getClass();
 
-    @Override
-    public Object setValue(Table vo, String columnName, Object value) {
-        return null;
-    }
+        // 모든 상위 클래스까지 검색
+        try {
+            while (voInfo != null) {
+                for (Field field : voInfo.getDeclaredFields()) {
+                    field.setAccessible(true);
+                    if (isColumn(field)) {
+                        Column column = new Column(field.getName(), voInfo);
+                        column.setValue(field.get(vo));
+                        list.add(column);
+                    }
+                }
+                voInfo = voInfo.getSuperclass();
+            }
+        } catch (IllegalAccessException e) {
+            // 예외전환
+            throw new CantAccessFieldException(e);
+        }
 
-    @Override
-    public RwType getRwType(Class voInfo, String columnName) {
-        return null;
-    }
-
-    @Override
-    public List<Column> transformToList(Table vo) {
-        return null;
+        return list;
     }
 
     @Override
     public List<Column> transformToList(Class voInfo) {
-        return null;
+        List<Column> list = new ArrayList<>();
+
+        // 모든 상위 클래스까지 검색
+        while (voInfo != null) {
+            for (Field field : voInfo.getDeclaredFields()) {
+                field.setAccessible(true);
+                if (isColumn(field)) list.add(new Column(field.getName(), voInfo));
+            }
+            voInfo = voInfo.getSuperclass();
+        }
+        return list;
     }
 
     @Override
     public Map<String, Column> transformToMap(Class voInfo) {
-        return null;
-    }
+        Map<String, Column> list = new HashMap<>();
+        Class loopClass = voInfo;
 
-    @Override
-    public boolean isCrypt(Class voInfo, String columnName) {
-        return false;
-    }
+        // 모든 상위 클래스까지 검색
+        while (loopClass != null) {
+            for (Field field : loopClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                if (isColumn(field)) list.put(field.getName(), new Column(field.getName(), voInfo));
 
-    @Override
-    public Table transform(Class voInfo, List<Column> columnValues) {
-        return null;
-    }
-
-    @Override
-    public Table transform(Class voInfo, Map<String, Column> columnValues) {
-        return null;
-    }
-
-    private String getPrimaryKeyFieldName(Class targetClass) {
-        while (targetClass != null) {
-            for (Field field : targetClass.getDeclaredFields()) {
-                if (isPrimaryKey(field)) return field.getName();
             }
-            targetClass = targetClass.getSuperclass();
+            loopClass = loopClass.getSuperclass();
         }
-        throw new NoExistPrimaryKeyFieldException();
+        return list;
     }
 
-    private boolean isPrimaryKey(Field field) {
-        field.setAccessible(true);
-        // 컬럼셋팅 어노테이션이 있다면 키 값을 검색
-        if (field.isAnnotationPresent(ColumnConfig.class)) {
-            ColumnConfig settings = field.getAnnotation(ColumnConfig.class);
-            if (settings.columnType().equals(ColumnType.PRIMARYKEY)) return true;
+    @Override
+    public Map<String, Column> transformToMap(Vo vo) throws CantAccessFieldException {
+        Map<String, Column> list = new HashMap<>();
+        Class loopClass = vo.getClass();
+        Class insertClass = vo.getClass();
+
+        try {
+            // 모든 상위 클래스까지 검색
+            while (loopClass != null) {
+                for (Field field : loopClass.getDeclaredFields()) {
+                    field.setAccessible(true);
+
+                    if (isColumn(field)) {
+                        Column column = new Column(field.getName(), insertClass);
+                        column.setValue(field.get(vo)); // 객체에서 값을 추출하여 컬럼에 입력한다
+                        list.put(field.getName(), column);
+                    }
+
+                }
+                loopClass = loopClass.getSuperclass();
+            }
+            return list;
+        } catch (IllegalAccessException e) {
+            throw new CantAccessFieldException(e);
         }
-        return false;
     }
 
+    @Override
+    public Vo transformToVo(List<Column> columns) throws CantConstructVoException {
+        Class voInfo = this.getVoInfo(columns);
+        Vo newVo = getNewVo(voInfo);
+        for (Column columnValue : columns) {
+            this.setValue(newVo, columnValue.getColumnName(), columnValue.getValue());
+        }
+        return newVo;
+    }
+
+    private boolean isColumn(Field field) {
+        return field.isAnnotationPresent(DbColumn.class);
+    }
+
+    private Vo getNewVo(Class voInfo) throws CantConstructVoException {
+        try {
+            // 새로운 객체 만들기 - 기본 생성자로 객체 생성
+            Constructor constructor = voInfo.getDeclaredConstructor();
+            return (Vo) constructor.newInstance();
+
+        } catch (Exception e) {
+            // 예외전환
+            throw new CantConstructVoException(e);
+        }
+
+    }
+
+    @Override
+    public Vo transformToVo(Map<String, Column> columns) {
+        Class voInfo = this.getVoInfo(columns);
+        Vo newVo = getNewVo(voInfo);
+        for (Map.Entry<String, Column> entry : columns.entrySet()) {
+            Column column = entry.getValue();
+            this.setValue(newVo, column.getColumnName(), column.getValue());
+        }
+        return newVo;
+    }
+
+
+    @Override
+    public Class getVoInfo(Map<String, Column> voMap) throws CantFindVoInfoException {
+        for (Map.Entry<String, Column> entry : voMap.entrySet()) {
+            Column column = entry.getValue();
+            return column.getVoInfo();
+        }
+
+        throw new CantFindVoInfoException();
+    }
+
+    @Override
+    public Class getVoInfo(List<Column> columns) throws CantFindVoInfoException {
+        if (columns.size() == 0) throw new CantFindVoInfoException("columns 리스트의 사이즈가 0입니다.");
+        return columns.get(0).getVoInfo();
+    }
+
+    private Field getField(String fieldName, Class target) throws CantAccessFieldException {
+        while (target != null) {
+            for (Field field : target.getDeclaredFields()) {
+                field.setAccessible(true);
+                if (field.getName().equals(fieldName)) return field;
+            }
+
+            target = target.getSuperclass();
+        }
+        throw new CantAccessFieldException("ERROR - 해당 필드가 없습니다. Field name : " + fieldName);
+    }
 }
