@@ -1,4 +1,4 @@
-package com.ciaosgarage.newDao.sqlExecutor.cryptHandler;
+package com.ciaosgarage.newDao.vo.cryptHandler;
 
 public class BasicCryptor extends SHA256Cryptor {
     private String key;

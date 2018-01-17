@@ -1,9 +1,11 @@
 package com.ciaosgarage.newDao.context;
 
+import com.ciaosgarage.newDao.dao.Dao;
+import com.ciaosgarage.newDao.dao.DaoImpl;
 import com.ciaosgarage.newDao.sqlExecutor.NamedParameterJdbcTemplateSqlExecutor;
 import com.ciaosgarage.newDao.sqlExecutor.SqlExecutor;
-import com.ciaosgarage.newDao.sqlExecutor.cryptHandler.BasicCryptor;
-import com.ciaosgarage.newDao.sqlExecutor.cryptHandler.Cryptor;
+import com.ciaosgarage.newDao.vo.cryptHandler.BasicCryptor;
+import com.ciaosgarage.newDao.vo.cryptHandler.Cryptor;
 import com.ciaosgarage.newDao.sqlExecutor.resultSetTranslator.ResultSetTranslatorImpl;
 import com.ciaosgarage.newDao.sqlHandler.SqlHandler;
 import com.ciaosgarage.newDao.sqlHandler.SqlHandlerImpl;
@@ -18,12 +20,16 @@ public class Context {
     // 암호화 기본키
     private static String CRPYTION_KEY = "De3CZBD2bdDfaefadv";
 
+    // 테이블 기본 prefix
+    private static String TABLE_PREFIX = "tbl";
+
     // 공개되는 객체
     public VoHandler voHandler;
     public DataSource dataSource;
     public SqlExecutor sqlExecutor;
     public SqlHandler sqlHandler;
     public Cryptor cryptor;
+    public Dao dao;
 
 
     // 싱글턴 리스트
@@ -37,12 +43,19 @@ public class Context {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         sqlExecutor = createSqlExecutor();
+        dao = createDao();
     }
 
     // 새로운 암호화키 설정
     public void setCrpytionKey(String key) {
         CRPYTION_KEY = key;
         createCryptor(CRPYTION_KEY);
+    }
+
+    // 새로운 테이블 prefix 설정
+    public void setTablePrefix(String prefix) {
+        TABLE_PREFIX = prefix;
+
     }
 
     /* ----------------------*/
@@ -70,7 +83,7 @@ public class Context {
 
     private SqlExecutor createSqlExecutor() {
         // SqlExecutor 를 동작시키기 위한 클래스 객체화
-        ResultSetTranslatorImpl  resultSetTranslator = new ResultSetTranslatorImpl();
+        ResultSetTranslatorImpl resultSetTranslator = new ResultSetTranslatorImpl();
         resultSetTranslator.setVoHandler(this.voHandler);
 
         NamedParameterJdbcTemplateSqlExecutor executor = new NamedParameterJdbcTemplateSqlExecutor();
@@ -92,6 +105,14 @@ public class Context {
     }
 
 
+    private Dao createDao() {
+        // Dao 를 동작시키기 위한 클래스 객체화
+        DaoImpl dao = new DaoImpl();
+        dao.setVoHandler(voHandler);
+        dao.setSqlExecutor(sqlExecutor);
+        dao.setSqlHandler(sqlHandler);
+        return dao;
+    }
 
 
 }

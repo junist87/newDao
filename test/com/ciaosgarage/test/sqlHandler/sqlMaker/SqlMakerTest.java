@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class SqlMakerTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Date date = Date.valueOf("2018-1-1");
+    private Timestamp date = Timestamp.valueOf("2018-1-1");
     private Double lat = 1.423;
 
     private SqlMaker sqlMaker;

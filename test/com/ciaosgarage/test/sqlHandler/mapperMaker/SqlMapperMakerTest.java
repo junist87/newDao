@@ -1,7 +1,7 @@
 package com.ciaosgarage.test.sqlHandler.mapperMaker;
 
 import com.ciaosgarage.newDao.context.Context;
-import com.ciaosgarage.newDao.sqlExecutor.cryptHandler.Cryptor;
+import com.ciaosgarage.newDao.vo.cryptHandler.Cryptor;
 import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMaker;
 import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class SqlMapperMakerTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Date createDate = Date.valueOf("2018-1-1");
+    private Timestamp createDate = Timestamp.valueOf("2018-1-1");
     private Double lat = 1.423;
 
     private String cnName = "name";

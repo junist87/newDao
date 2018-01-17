@@ -6,6 +6,7 @@ import com.ciaosgarage.newDao.vo.RwType;
 import com.ciaosgarage.newDao.vo.Vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class TestVo extends Vo {
     @DbColumn(rwType = RwType.EDITABLE)
@@ -15,7 +16,7 @@ public class TestVo extends Vo {
     @DbColumn(cryptOption = CryptOption.ON)
     public String nickname;
     @DbColumn(rwType = RwType.READONLY)
-    public Date createDate;
+    public Timestamp createDate;
     @DbColumn()
     public Double lat;
 }

@@ -5,10 +5,11 @@ import com.ciaosgarage.newDao.exceptions.CannotDefineDataTypeException;
 import com.ciaosgarage.newDao.exceptions.CantCloneColumnInstance;
 import com.ciaosgarage.newDao.exceptions.CantFindColumnException;
 import com.ciaosgarage.newDao.exceptions.NoValueExcption;
-import com.ciaosgarage.newDao.sqlExecutor.cryptHandler.Cryptor;
+import com.ciaosgarage.newDao.vo.cryptHandler.Cryptor;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Column implements Cloneable {
     private String columnName;
@@ -61,6 +62,9 @@ public class Column implements Cloneable {
 
         // 입력값이 String 이면 변환할지 체크하기
         switch (this.getDataType()) {
+            case TIMESTAMP:
+                this.value = Timestamp.valueOf(value);
+                break;
             case DATE:
                 this.value = Date.valueOf(value);
                 break;

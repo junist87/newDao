@@ -5,6 +5,7 @@ import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMaker;
 import com.ciaosgarage.newDao.sqlVo.SqlMapper;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
 import com.ciaosgarage.newDao.vo.Column;
+import com.sun.tools.corba.se.idl.StringGen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +26,25 @@ public class SqlHandlerImpl implements SqlHandler {
     @Override
     public SqlMapper getSqlMapper(Map<String, Column> voMap, SqlType type, List<AttachStmt> stmts) {
         // 기본값 가져오기
-        SqlMapper sqlMapper = getSqlMapper(voMap, type);
+        String sql = makeSql(voMap, type, stmts);
 
-        // 추가 스테이트먼트 합치기
-        String sql = sqlMapper.getSql() + getAttachStmtSql(stmts);
-        Map<String, Object> mapper = sqlMapperMaker.makeMapper(stmts);
-        mapper.putAll(sqlMapper.getMapper());
+        Map<String, Object> mapper;
+        mapper = sqlMapperMaker.makeMapper(stmts);
+        mapper.putAll(sqlMapperMaker.makeMapper(voMap));
         return new SqlMapper(sql, mapper);
 
     }
 
     @Override
     public SqlMapper getSqlMapper(Map<String, Column> voMap, SqlType type) {
+        return getSqlMapper(voMap, type, new ArrayList<>());
+    }
+
+    private String makeSql(Map<String, Column> voMap, SqlType type, List<AttachStmt> stmts) {
         String sql;
-        Map<String, Object> mapper = sqlMapperMaker.makeMapper(voMap);
         switch (type) {
             case SELECT:
-                sql = sqlMaker.select(voMap, new ArrayList<>());
+                sql = sqlMaker.select(voMap, stmts);
                 break;
             case COUNT:
                 sql = sqlMaker.count(voMap);
@@ -61,15 +64,7 @@ public class SqlHandlerImpl implements SqlHandler {
             default:
                 sql = "";
         }
-        return new SqlMapper(sql, mapper);
+        return sql;
     }
 
-    private String getAttachStmtSql(List<AttachStmt> stmts) {
-        StringBuilder sql = new StringBuilder();
-        for (AttachStmt stmt : stmts) {
-            sql.append(stmt.getStatement());
-            sql.append(" ");
-        }
-        return sql.toString().trim();
-    }
 }

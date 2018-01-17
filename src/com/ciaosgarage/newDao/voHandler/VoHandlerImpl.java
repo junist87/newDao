@@ -17,10 +17,11 @@ public class VoHandlerImpl implements VoHandler {
 
 
     @Override
-    public void setPk(Vo vo, Object value) throws CantAccessFieldException {
+    public Vo setPk(Vo vo, Object value) throws CantAccessFieldException {
         try {
             Field field = this.getField("pk", vo.getClass());
             field.set(vo, value);
+            return vo;
         } catch (Exception e) {
             // 예외전환
             throw new CantAccessFieldException(e);

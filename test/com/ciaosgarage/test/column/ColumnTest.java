@@ -4,10 +4,12 @@ import com.ciaosgarage.test.TestVo;
 import com.ciaosgarage.newDao.context.Context;
 
 import com.ciaosgarage.newDao.vo.Column;
+import com.sun.tools.corba.se.idl.constExpr.Times;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
@@ -21,7 +23,7 @@ public class ColumnTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Date height = Date.valueOf("2018-1-1");
+    private Timestamp height = Timestamp.valueOf("2018-1-1");
     private Double lat = 1.423;
 
 

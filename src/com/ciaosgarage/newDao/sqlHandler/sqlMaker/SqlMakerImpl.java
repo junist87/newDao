@@ -14,43 +14,45 @@ public class SqlMakerImpl implements SqlMaker {
     // PrimaryKey 컬럼이름 기본값
     private String PrimaryKeyColumnName = "pk";
 
+    // 기본설정값 수정
     public void setTablePrefix(String prefix) {
         TablePrefix = prefix;
     }
 
+    // 기본설정값 수정
     public void setPrimaryKeyColumnName(String primaryKeyColumnName) {
         PrimaryKeyColumnName = primaryKeyColumnName;
     }
 
     @Override
-    public String select(Map<String, Column> columnMap, List<AttachStmt> attachStmts) {
-        return "SELECT * FROM " + TablePrefix + getTableName(columnMap) + " " + getAttachStmtSql(attachStmts);
+    public String select(Map<String, Column> voMap, List<AttachStmt> attachStmts) {
+        return "SELECT * FROM " + TablePrefix + getTableName(voMap) + " " + getAttachStmtSql(attachStmts);
     }
 
     @Override
-    public String update(Map<String, Column> columnMap) {
-        return "UPDATE " + TablePrefix + getTableName(columnMap) + " SET " + getUpdateValues(columnMap) +
-                " " + getWherePrimaryKey(columnMap);
+    public String update(Map<String, Column> voMap) {
+        return "UPDATE " + TablePrefix + getTableName(voMap) + " SET " + getUpdateValues(voMap) +
+                " " + getWherePrimaryKey(voMap);
     }
 
     @Override
-    public String insert(Map<String, Column> columnMap) {
-        return "INSERT INTO " + TablePrefix + getTableName(columnMap) + " " + getInsertValue(columnMap);
+    public String insert(Map<String, Column> voMap) {
+        return "INSERT INTO " + TablePrefix + getTableName(voMap) + " " + getInsertValue(voMap);
     }
 
     @Override
-    public String delete(Map<String, Column> columnMap) {
-        return "DELETE FROM " + TablePrefix + getTableName(columnMap) + " " + getWherePrimaryKey(columnMap);
+    public String delete(Map<String, Column> voMap) {
+        return "DELETE FROM " + TablePrefix + getTableName(voMap) + " " + getWherePrimaryKey(voMap);
     }
 
     @Override
-    public String deleteAll(Map<String, Column> columnMap) {
-        return "DELETE FROM " + TablePrefix + getTableName(columnMap);
+    public String deleteAll(Map<String, Column> voMap) {
+        return "DELETE FROM " + TablePrefix + getTableName(voMap);
     }
 
     @Override
-    public String count(Map<String, Column> columnMap) {
-        return "SELECT COUNT(*) FROM " + TablePrefix + getTableName(columnMap);
+    public String count(Map<String, Column> voMap) {
+        return "SELECT COUNT(*) FROM " + TablePrefix + getTableName(voMap);
     }
 
     private String getAttachStmtSql(List<AttachStmt> attachStmts) {
@@ -62,23 +64,24 @@ public class SqlMakerImpl implements SqlMaker {
         return sql.toString().trim();
     }
 
-    private String getWherePrimaryKey(Map<String, Column> columnMap) {
-        Column pkColumn = columnMap.get(PrimaryKeyColumnName);
+    private String getWherePrimaryKey(Map<String, Column> voMap) {
+        Column pkColumn = voMap.get(PrimaryKeyColumnName);
         return "WHERE " + pkColumn.getColumnName() + " = :" + pkColumn.getMapperName();
     }
 
-    private String getTableName(Map<String, Column> columnMap) {
-        return columnMap.get(PrimaryKeyColumnName).getVoInfo().getSimpleName();
+    private String getTableName(Map<String, Column> voMap) {
+        return voMap.get(PrimaryKeyColumnName).getVoInfo().getSimpleName();
     }
 
 
-    private String getUpdateValues(Map<String, Column> columnMap) {
+    private String getUpdateValues(Map<String, Column> voMap) {
         StringBuilder sql = new StringBuilder();
-        for (Map.Entry<String, Column> entry : columnMap.entrySet()) {
+        for (Map.Entry<String, Column> entry : voMap.entrySet()) {
             Column column = entry.getValue();
-            // 수정금지 이거나, primary Key 값이라면 다음으로 넘어간다
+            // 수정금지 이거나, 입력할 값이 없거나,primary Key 값이라면 다음으로 넘어간다
             if ((!column.getRwType().equals(RwType.EDITABLE))
-                    || (column.getColumnName().equals(PrimaryKeyColumnName))) continue;
+                    || (column.getColumnName().equals(PrimaryKeyColumnName))
+                    || (!column.isExistValue())) continue;
 
             // Sql 생성
             sql.append(column.getColumnName());
@@ -90,15 +93,16 @@ public class SqlMakerImpl implements SqlMaker {
     }
 
 
-    private String getInsertValue(Map<String, Column> columnMap) {
+    private String getInsertValue(Map<String, Column> voMap) {
         StringBuilder columnNames = new StringBuilder();
         StringBuilder mapperNames = new StringBuilder();
 
-        for (Map.Entry<String, Column> entry : columnMap.entrySet()) {
+        for (Map.Entry<String, Column> entry : voMap.entrySet()) {
             Column column = entry.getValue();
 
-            // 읽기전용이라면 다음으로 넘긴다
-            if (column.getRwType().equals(RwType.READONLY)) continue;
+            // 읽기전용이거나, 입력할 값이 없으면 다음으로 넘긴다
+            if (column.getRwType().equals(RwType.READONLY)
+                    || (!column.isExistValue())) continue;
 
             // SQL 을 작성한다
             columnNames.append(column.getColumnName());

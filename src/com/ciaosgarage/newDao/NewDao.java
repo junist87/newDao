@@ -12,6 +12,7 @@ public class NewDao {
 
     public NewDao(DataSource dataSource) {
         this.dataSource = dataSource;
+        context.setDataSource(dataSource);
     }
 
     public Context getContext() {

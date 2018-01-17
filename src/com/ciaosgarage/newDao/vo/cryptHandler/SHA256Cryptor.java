@@ -1,4 +1,4 @@
-package com.ciaosgarage.newDao.sqlExecutor.cryptHandler;
+package com.ciaosgarage.newDao.vo.cryptHandler;
 
 import org.apache.commons.codec.binary.Base64;
 

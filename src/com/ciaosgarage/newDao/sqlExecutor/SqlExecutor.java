@@ -43,7 +43,7 @@ public interface SqlExecutor {
      * @return 조건에 맞는 레코드
      * @throws EmptyResultDataAccessException 검색하는 조건값이 없다면 발생하는 Exception
      */
-    List<Object> query(Class voInfo, String sql, Map<String, Object> mapper) throws EmptyResultDataAccessException;
+    List<Vo> query(Class voInfo, String sql, Map<String, Object> mapper) throws EmptyResultDataAccessException;
 
     /**
      * 해당 테이블의 전체 레코드의 수를 가져오는 메소드

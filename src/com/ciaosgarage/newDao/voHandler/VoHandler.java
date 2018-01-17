@@ -23,7 +23,7 @@ public interface VoHandler {
      * @param value 입력할 값
      * @throws CantAccessFieldException the cant access field exception
      */
-    void setPk(Vo vo, Object value) throws CantAccessFieldException;
+    Vo setPk(Vo vo, Object value) throws CantAccessFieldException;
 
     /**
      * 특정한 필드의 값을 가져온다

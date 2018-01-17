@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -157,7 +158,7 @@ public class VoHandlerTest {
         String name = "Jun";
         String nickname = "Ciao";
         Integer age = 32;
-        Date createDate = Date.valueOf("1987-9-24");
+        Timestamp createDate = Timestamp.valueOf("1987-9-24");
         Double lat = 123.2321;
 
         TestVo tempVo = new TestVo();
@@ -225,7 +226,7 @@ public class VoHandlerTest {
         String name = "Lee";
         String nickname = "CiaoLee";
         Integer age = 32;
-        Date date = Date.valueOf("2018-9-24");
+        Timestamp date = Timestamp.valueOf("2018-9-24");
 
         testVo.name = name;
         testVo.nickname = nickname;
