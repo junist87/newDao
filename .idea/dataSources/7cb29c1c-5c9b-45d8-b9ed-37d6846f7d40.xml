@@ -949,7 +949,7 @@
     <table id="239" parent="4" name="tblSeqTable">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="240" parent="4" name="tblTestVo">
+    <table id="240" parent="4" name="tblTestVO">
       <Engine>InnoDB</Engine>
     </table>
     <column id="241" parent="237" name="pk">

@@ -1,12 +1,12 @@
-package com.ciaosgarage.test.voHandler;
+package voHandler;
 
-import com.ciaosgarage.test.testVo.TestVO;
 import com.ciaosgarage.newDao.exceptions.CantAccessFieldException;
 import com.ciaosgarage.newDao.vo.*;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
 import com.ciaosgarage.newDao.voHandler.VoHandlerImpl;
 import org.junit.Before;
 import org.junit.Test;
+import testVO.TestVO;
 
 import java.sql.Date;
 import java.sql.Timestamp;

@@ -1,11 +1,10 @@
-package com.ciaosgarage.test.testVo;
+package testVO;
 
 import com.ciaosgarage.newDao.vo.CryptOption;
 import com.ciaosgarage.newDao.vo.DbColumn;
 import com.ciaosgarage.newDao.vo.RwType;
 import com.ciaosgarage.newDao.vo.Vo;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class TestVO extends Vo {

@@ -1,15 +1,15 @@
-package com.ciaosgarage.test.daoService.dao;
+package daoService.dao;
 
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.daoService.dao.Dao;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
-import com.ciaosgarage.test.testVo.TestVO;
-import com.ciaosgarage.test.testVo.TestVoSampler;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import testVO.TestVO;
+import testVO.TestVoSampler;
 
 import javax.sql.DataSource;
 

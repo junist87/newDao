@@ -1,4 +1,4 @@
-package com.ciaosgarage.test.daoService.daoService;
+package daoService.daoService;
 
 import org.junit.Before;
 

@@ -1,16 +1,17 @@
-package com.ciaosgarage.test.daoService.seqTableTest;
+package daoService.seqTableTest;
 
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.daoService.seqTableHandler.SeqTableHandler;
 import com.ciaosgarage.newDao.daoService.seqTableHandler.SeqTableHandlerImpl;
 import com.ciaosgarage.newDao.defaultVo.SeqTable;
 import com.ciaosgarage.newDao.sqlVo.requsetHandler.MySqlRequestHandler;
-import com.ciaosgarage.test.testVo.AccountVO;
-import com.ciaosgarage.test.testVo.PhotoVO;
-import com.ciaosgarage.test.testVo.TestVO;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import testVO.AccountVO;
+import testVO.PhotoVO;
+import testVO.TestVO;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;

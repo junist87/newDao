@@ -1,4 +1,4 @@
-package com.ciaosgarage.test.testVo;
+package testVO;
 
 import com.ciaosgarage.newDao.vo.DbColumn;
 import com.ciaosgarage.newDao.vo.Vo;

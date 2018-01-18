@@ -1,14 +1,15 @@
-package com.ciaosgarage.test.sqlHandler.sqlMaker;
+package sqlHandler.sqlMaker;
 
 
 import com.ciaosgarage.newDao.sqlHandler.sqlMaker.SqlMaker;
 import com.ciaosgarage.newDao.sqlHandler.sqlMaker.SqlMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
-import com.ciaosgarage.test.testVo.TestVO;
+
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.vo.Column;
 import org.junit.Before;
 import org.junit.Test;
+import testVO.TestVO;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

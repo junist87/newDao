@@ -1,4 +1,4 @@
-package com.ciaosgarage.test.sqlHandler.mapperMaker;
+package sqlHandler.mapperMaker;
 
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.vo.cryptHandler.Cryptor;
@@ -7,9 +7,9 @@ import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
 import com.ciaosgarage.newDao.vo.Column;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
-import com.ciaosgarage.test.testVo.TestVO;
 import org.junit.Before;
 import org.junit.Test;
+import testVO.TestVO;
 
 import java.sql.Timestamp;
 import java.util.Arrays;

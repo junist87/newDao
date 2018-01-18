@@ -1,11 +1,12 @@
-package com.ciaosgarage.test.column;
+package column;
 
-import com.ciaosgarage.test.testVo.TestVO;
+
 import com.ciaosgarage.newDao.context.Context;
 
 import com.ciaosgarage.newDao.vo.Column;
 import org.junit.Before;
 import org.junit.Test;
+import testVO.TestVO;
 
 import java.sql.Timestamp;
 import java.util.Map;

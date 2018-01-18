@@ -1,4 +1,4 @@
-package com.ciaosgarage.test.testVo;
+package testVO;
 
 public class TestVoSampler {
     private VoSampler voSampler;
