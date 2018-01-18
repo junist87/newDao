@@ -6,6 +6,7 @@ import com.ciaosgarage.newDao.sqlHandler.sqlMaker.SqlMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
 
 import com.ciaosgarage.newDao.context.Context;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.CSSelectAll;
 import com.ciaosgarage.newDao.vo.Column;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class SqlMakerTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Timestamp date = Timestamp.valueOf("2018-1-1");
+    private Timestamp date = Timestamp.valueOf("2018-1-1 00:00:00");
     private Double lat = 1.423;
 
     private SqlMaker sqlMaker;
@@ -41,6 +42,8 @@ public class SqlMakerTest {
         vo.createDate = date;
         vo.lat = lat;
 
+        Context.instance.voHandler.setPk(vo, "ABD");
+
         // 테스트 준비물
         this.voMap = Context.instance.voHandler.transformToMap(vo);
         this.emptyVoMap = Context.instance.voHandler.transformToMap(TestVO.class);
@@ -52,15 +55,15 @@ public class SqlMakerTest {
     @Test
     public void select() {
         String sql;
-        sql = sqlMaker.selectAll(voMap, new ArrayList<>());
+        sql = sqlMaker.select(voMap, new CSSelectAll(), new ArrayList<>());
         System.out.println(sql);
 
         ASWhere asWhere = new ASWhere(TestVO.class);
-        asWhere.addRangeValue("lat",132.2, 242.2);
+        asWhere.addRangeValue("lat", 132.2, 242.2);
         asWhere.addAndValue("name", "ABCD");
         asWhere.addOrValue("age", 11);
-        sql = sqlMaker.selectAll(voMap, Arrays.asList(asWhere));
-        assertThat(sql, is("SELECT * FROM tblTestVo WHERE BETWEEN lat :ASWhere0 AND :ASWhere1 AND name = :ASWhere2 OR age = :ASWhere3"));
+        sql = sqlMaker.select(voMap, new CSSelectAll(), Arrays.asList(asWhere));
+        assertThat("SELECT * FROM tblTestVO WHERE BETWEEN lat :ASWhere0 AND :ASWhere1 AND name = :ASWhere2 OR age = :ASWhere3", is(sql));
         System.out.println(sql);
     }
 
@@ -68,7 +71,7 @@ public class SqlMakerTest {
     public void insert() {
         String sql;
         sql = sqlMaker.insert(voMap);
-        assertThat(sql, is("INSERT INTO tblTestVo (name, nickname, pk, age, lat) VALUES (:name, :nickname, :pk, :age, :lat)"));
+        assertThat("INSERT INTO tblTestVO (name, nickname, pk, age, lat) VALUES (:name, :nickname, :pk, :age, :lat)", is(sql));
         System.out.println(sql);
     }
 
@@ -77,7 +80,7 @@ public class SqlMakerTest {
         String sql;
         sql = sqlMaker.update(voMap);
 
-        assertThat(sql, is("UPDATE tblTestVo SET name = :name, nickname = :nickname, lat = :lat WHERE pk = :pk"));
+        assertThat("UPDATE tblTestVO SET name = :name, nickname = :nickname, lat = :lat WHERE pk = :pk", is(sql));
         System.out.println(sql);
     }
 
@@ -85,11 +88,11 @@ public class SqlMakerTest {
     public void delete() {
         String sql;
         sql = sqlMaker.delete(voMap);
-        assertThat(sql, is("DELETE FROM tblTestVo WHERE pk = :pk"));
+        assertThat("DELETE FROM tblTestVO WHERE pk = :pk", is(sql));
         System.out.println(sql);
 
         sql = sqlMaker.deleteAll(voMap);
-        assertThat(sql, is("DELETE FROM tblTestVo"));
+        assertThat("DELETE FROM tblTestVO", is(sql));
         System.out.println(sql);
     }
 }

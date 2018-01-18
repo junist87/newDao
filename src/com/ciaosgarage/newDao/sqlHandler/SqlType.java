@@ -1,5 +1,5 @@
 package com.ciaosgarage.newDao.sqlHandler;
 
 public enum SqlType {
-    SELECT, DELETE, INSERT, UPDATE, DELETEALL, COUNT
+    SELECTALL, DELETE, INSERT, UPDATE, DELETEALL, COUNT, SELECT
 }

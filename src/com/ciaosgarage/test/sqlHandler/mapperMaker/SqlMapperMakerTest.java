@@ -27,7 +27,7 @@ public class SqlMapperMakerTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Timestamp createDate = Timestamp.valueOf("2018-1-1");
+    private Timestamp createDate = Timestamp.valueOf("2018-1-1 00:00:00");
     private Double lat = 1.423;
 
     private String cnName = "name";

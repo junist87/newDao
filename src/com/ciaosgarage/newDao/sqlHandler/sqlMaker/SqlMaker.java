@@ -14,14 +14,6 @@ import java.util.Map;
  * Update, Insert, Delete
  */
 public interface SqlMaker {
-    /**
-     * Select 문을 만드는 메소드
-     *
-     * @param voMap       SQL 작성에 필요한 vo 객체의 Map
-     * @param attachStmts the attach stmts
-     * @return SQL 문
-     */
-    String selectAll(Map<String, Column> voMap, List<AttachStmt> attachStmts);
 
 
     /**
@@ -70,7 +62,7 @@ public interface SqlMaker {
     String deleteAll(Map<String, Column> voMap);
 
     /**
-     * SELECT COUNT(*) FROM ... 형태의 Count 문을 만드는 메소드
+     * SELECTALL COUNT(*) FROM ... 형태의 Count 문을 만드는 메소드
      *
      * @param voMap SQL 작성에 필요한 vo 객체의 Map
      * @return SQL 문

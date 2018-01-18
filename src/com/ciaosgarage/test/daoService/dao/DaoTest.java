@@ -3,6 +3,7 @@ package daoService.dao;
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.daoService.dao.Dao;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.CSSelectAll;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class DaoTest {
             ASWhere asWhere = new ASWhere(TestVO.class);
             asWhere.addAndValue("pk", String.valueOf(index));
 
-            TestVO getVo = (TestVO) dao.get(TestVO.class, Arrays.asList(asWhere));
+            TestVO getVo = (TestVO) dao.get(TestVO.class, new CSSelectAll(), Arrays.asList(asWhere));
 
             isSameVo(vo, getVo, true);
 
@@ -87,7 +88,7 @@ public class DaoTest {
             // 데이터를 pk 기준으로 추출한다.
             ASWhere asWhere = new ASWhere(TestVO.class);
             asWhere.addAndValue("pk", String.valueOf(index));
-            TestVO getVo = (TestVO) dao.get(TestVO.class, Arrays.asList(asWhere));
+            TestVO getVo = (TestVO) dao.get(TestVO.class, new CSSelectAll(), Arrays.asList(asWhere));
 
             // 두 데이터를 비교한다
             isSameVo(vo, getVo, false);
@@ -147,7 +148,7 @@ public class DaoTest {
             // 삭제한다.
             int delete = dao.delete(vo);
             System.out.println("삭제될 레코드 pk :" + vo.getPk());
-            System.out.println("삭제된 레코드 수 : " + delete );
+            System.out.println("삭제된 레코드 수 : " + delete);
             // 중복된 숫자가 나오면 i값을 뒤로 한번 돌리고 다음 pk 값으로 넘어간다
             if (delete == 0) {
                 i -= 1;
@@ -161,7 +162,7 @@ public class DaoTest {
                 // 데이터를 pk 기준으로 추출한다.
                 ASWhere asWhere = new ASWhere(TestVO.class);
                 asWhere.addAndValue("pk", String.valueOf(index));
-                TestVO getVo = (TestVO) dao.get(TestVO.class, Arrays.asList(asWhere));
+                TestVO getVo = (TestVO) dao.get(TestVO.class, new CSSelectAll(), Arrays.asList(asWhere));
                 fail(); // 데이터가 찾아지면 삭제되지 않은것 이므로 실험실패
             } catch (EmptyResultDataAccessException e) {
             }

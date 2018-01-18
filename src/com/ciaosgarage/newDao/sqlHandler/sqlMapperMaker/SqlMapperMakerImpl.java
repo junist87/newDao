@@ -34,6 +34,7 @@ public class SqlMapperMakerImpl implements SqlMapperMaker {
     @Override
     public Map<String, Object> makeMapper(ColumnStmt columnStmt) {
         Map<String, Object> mapper = new HashMap<>();
+        if (columnStmt.getMapper() == null) return mapper;  // 맵퍼가 없다면 그냥 넘어간다
         for (Column column : columnStmt.getMapper()) {
             // 컬럼에 대입할 데이터가 있을때만 추가한다
             if (column.isExistValue()) mapper.put(column.getMapperName(), column.getMapperValue());

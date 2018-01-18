@@ -25,10 +25,6 @@ public class SqlMakerImpl implements SqlMaker {
         PrimaryKeyColumnName = primaryKeyColumnName;
     }
 
-    @Override
-    public String selectAll(Map<String, Column> voMap, List<AttachStmt> attachStmts) {
-        return "SELECT * FROM " + tablePrefix + getTableName(voMap) + " " + getAttachStmtSql(attachStmts);
-    }
 
     @Override
     public String select(Map<String, Column> voMap, ColumnStmt columnStmt, List<AttachStmt> attachStmts) {

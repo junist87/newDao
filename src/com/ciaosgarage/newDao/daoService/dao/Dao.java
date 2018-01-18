@@ -1,6 +1,7 @@
 package com.ciaosgarage.newDao.daoService.dao;
 
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.ColumnStmt;
 import com.ciaosgarage.newDao.vo.Vo;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 /**
  * The interface daoTest.
- * 데이터베이스에 접근하여 데이터를 열람(SELECT), 추가(INSERT), 수정(UPDATE), 삭제(DELETE) 하는 기능
+ * 데이터베이스에 접근하여 데이터를 열람(SELECTALL), 추가(INSERT), 수정(UPDATE), 삭제(DELETE) 하는 기능
  * 클래스 다이어그램
  */
 public interface Dao {
@@ -29,7 +30,7 @@ public interface Dao {
      * @return 조건에 맞는 데이터를 추출하려 리턴한다
      * @throws EmptyResultDataAccessException 검색결과가 없으면 생성되는 RuntimeException
      */
-    Vo get(Class voInfo, List<AttachStmt> statements) throws EmptyResultDataAccessException;
+    Vo get(Class voInfo, ColumnStmt columnStmt, List<AttachStmt> statements) throws EmptyResultDataAccessException;
 
     /**
      * 데이터베이스에서 여러개의 레코드를 읽어오는 메소드
@@ -38,7 +39,7 @@ public interface Dao {
      * @param statements 데이터를 읽어올때 필요한 조건
      * @return 조건에 맞는 데이터를 추출하려 리턴한다
      */
-    List getList(Class voInfo, List<AttachStmt> statements) throws EmptyResultDataAccessException;
+    List getList(Class voInfo, ColumnStmt columnStmt, List<AttachStmt> statements) throws EmptyResultDataAccessException;
 
     /**
      * 데이터베이스에서 해당 정보를 수정하는 메소드

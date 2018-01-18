@@ -1,6 +1,7 @@
 package com.ciaosgarage.newDao.sqlVo.requsetHandler;
 
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.ColumnStmt;
 
 import java.util.List;
 
@@ -17,7 +18,21 @@ public interface RequestHandler {
      *
      * @return attach statement
      */
-    List<AttachStmt> getStatements();
+    List<AttachStmt> getAttachStmt();
+
+
+    /**
+     * Gets column stmt.
+     *
+     * @return the column stmt
+     */
+    ColumnStmt getColumnStmt();
+
+
+    /**
+     * Sets column stmt.
+     */
+    void setColumnStmt(ColumnStmt columnStmt);
 
     /**
      * 이 요청의 결과값을 담을 vo 객체의 클래스 정보를 리턴한다

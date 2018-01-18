@@ -47,7 +47,7 @@ public class SeqTableHandlerImpl implements SeqTableHandler {
         requestHandler.orderBy("primaryKey", false);
         requestHandler.numberOf(1);
         try {
-            SeqTable getLast = (SeqTable) dao.get(SeqTable.class, requestHandler.getStatements());
+            SeqTable getLast = (SeqTable) dao.get(SeqTable.class, requestHandler.getColumnStmt(), requestHandler.getAttachStmt());
             return getLast.primaryKey;
         } catch (EmptyResultDataAccessException e) {
             return 0;
@@ -61,7 +61,7 @@ public class SeqTableHandlerImpl implements SeqTableHandler {
         requestHandler.numberOf(1);
 
         try {
-            SeqTable getLast = (SeqTable) dao.get(SeqTable.class, requestHandler.getStatements());
+            SeqTable getLast = (SeqTable) dao.get(SeqTable.class, requestHandler.getColumnStmt(), requestHandler.getAttachStmt());
             return getLast.targetPk;
         } catch (EmptyResultDataAccessException e) {
             return 0;

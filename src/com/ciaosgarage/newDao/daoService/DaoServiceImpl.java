@@ -30,12 +30,12 @@ public class DaoServiceImpl implements DaoService {
 
     @Override
     public Vo pullVo(RequestHandler request) throws EmptyResultDataAccessException {
-        return dao.get(request.getVoInfo(), request.getStatements());
+        return dao.get(request.getVoInfo(), request.getColumnStmt(), request.getAttachStmt());
     }
 
     @Override
     public List pullVoList(RequestHandler request) throws EmptyResultDataAccessException {
-        return dao.getList(request.getVoInfo(), request.getStatements());
+        return dao.getList(request.getVoInfo(), request.getColumnStmt(), request.getAttachStmt());
     }
 
     @Override
