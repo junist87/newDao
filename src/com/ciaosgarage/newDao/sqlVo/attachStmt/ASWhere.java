@@ -18,7 +18,7 @@ public class ASWhere implements AttachStmt {
     private StringBuffer sql;
 
     public ASWhere(Class voInfo) {
-        this.voMap = Context.modules.voHandler.transformToMap(voInfo);
+        this.voMap = Context.instance.voHandler.transformToMap(voInfo);
         this.mapper = new ArrayList<>();
         this.sql = new StringBuffer("WHERE ");
     }

@@ -4,13 +4,12 @@ package com.ciaosgarage.test.sqlHandler.sqlMaker;
 import com.ciaosgarage.newDao.sqlHandler.sqlMaker.SqlMaker;
 import com.ciaosgarage.newDao.sqlHandler.sqlMaker.SqlMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
-import com.ciaosgarage.test.TestVo;
+import com.ciaosgarage.test.testVo.TestVO;
 import com.ciaosgarage.newDao.context.Context;
 import com.ciaosgarage.newDao.vo.Column;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +33,7 @@ public class SqlMakerTest {
     @Before
     public void setUp() {
         // 테스트용 vo 객체 생성
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         vo.name = name;
         vo.age = age;
         vo.nickname = nickname;
@@ -42,8 +41,8 @@ public class SqlMakerTest {
         vo.lat = lat;
 
         // 테스트 준비물
-        this.voMap = Context.modules.voHandler.transformToMap(vo);
-        this.emptyVoMap = Context.modules.voHandler.transformToMap(TestVo.class);
+        this.voMap = Context.instance.voHandler.transformToMap(vo);
+        this.emptyVoMap = Context.instance.voHandler.transformToMap(TestVO.class);
 
         // 객체준비
         sqlMaker = new SqlMakerImpl();
@@ -52,14 +51,14 @@ public class SqlMakerTest {
     @Test
     public void select() {
         String sql;
-        sql = sqlMaker.select(voMap, new ArrayList<>());
+        sql = sqlMaker.selectAll(voMap, new ArrayList<>());
         System.out.println(sql);
 
-        ASWhere asWhere = new ASWhere(TestVo.class);
+        ASWhere asWhere = new ASWhere(TestVO.class);
         asWhere.addRangeValue("lat",132.2, 242.2);
         asWhere.addAndValue("name", "ABCD");
         asWhere.addOrValue("age", 11);
-        sql = sqlMaker.select(voMap, Arrays.asList(asWhere));
+        sql = sqlMaker.selectAll(voMap, Arrays.asList(asWhere));
         assertThat(sql, is("SELECT * FROM tblTestVo WHERE BETWEEN lat :ASWhere0 AND :ASWhere1 AND name = :ASWhere2 OR age = :ASWhere3"));
         System.out.println(sql);
     }

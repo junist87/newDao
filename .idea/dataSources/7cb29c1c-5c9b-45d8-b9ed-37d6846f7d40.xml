@@ -940,39 +940,166 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="237" parent="4" name="tblTestVo">
+    <table id="237" parent="4" name="tblAccountVO">
       <Engine>InnoDB</Engine>
     </table>
-    <column id="238" parent="237" name="pk">
+    <table id="238" parent="4" name="tblPhotoVO">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="239" parent="4" name="tblSeqTable">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="240" parent="4" name="tblTestVo">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="241" parent="237" name="pk">
       <Position>1</Position>
-      <DataType>varchar(16)|0</DataType>
+      <DataType>char(16)|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="237" name="name">
+    <column id="242" parent="237" name="name">
       <Position>2</Position>
-      <DataType>varchar(50)|0</DataType>
+      <DataType>varchar(100)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="237" name="age">
+    <column id="243" parent="237" name="age">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="237" name="nickname">
+    <column id="244" parent="237" name="address">
+      <Position>4</Position>
+      <DataType>varchar(1000)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="245" parent="237" name="tblAccountVO_pk_uindex">
+      <ColNames>pk</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="246" parent="237" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>pk</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="247" parent="237" name="tblAccountVO_pk_uindex">
+      <ColNames>pk</ColNames>
+      <UnderlyingIndexName>tblAccountVO_pk_uindex</UnderlyingIndexName>
+    </key>
+    <column id="248" parent="238" name="pk">
+      <Position>1</Position>
+      <DataType>char(16)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="249" parent="238" name="accountPk">
+      <Position>2</Position>
+      <DataType>char(16)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="250" parent="238" name="path">
+      <Position>3</Position>
+      <DataType>varchar(1000)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="251" parent="238" name="tblPhotoVO_pk_uindex">
+      <ColNames>pk</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="252" parent="238" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>pk</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="253" parent="238" name="tblPhotoVO_pk_uindex">
+      <ColNames>pk</ColNames>
+      <UnderlyingIndexName>tblPhotoVO_pk_uindex</UnderlyingIndexName>
+    </key>
+    <column id="254" parent="239" name="pk">
+      <Position>1</Position>
+      <DataType>char(16)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="255" parent="239" name="targetName">
+      <Position>2</Position>
+      <DataType>varchar(50)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="256" parent="239" name="primaryKey">
+      <Position>3</Position>
+      <DataType>int(16)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="257" parent="239" name="targetPk">
+      <Position>4</Position>
+      <DataType>int(16)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="258" parent="239" name="createDate">
+      <Position>5</Position>
+      <DataType>timestamp|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="259" parent="239" name="tblSeqTable_pk_uindex">
+      <ColNames>pk</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="260" parent="239" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>pk</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="261" parent="239" name="tblSeqTable_pk_uindex">
+      <ColNames>pk</ColNames>
+      <UnderlyingIndexName>tblSeqTable_pk_uindex</UnderlyingIndexName>
+    </key>
+    <column id="262" parent="240" name="pk">
+      <Position>1</Position>
+      <DataType>char(16)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="263" parent="240" name="name">
+      <Position>2</Position>
+      <DataType>varchar(50)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="264" parent="240" name="age">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="265" parent="240" name="nickname">
       <Position>4</Position>
       <DataType>varchar(100)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="237" name="createDate">
+    <column id="266" parent="240" name="createDate">
       <Position>5</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="237" name="lat">
+    <column id="267" parent="240" name="lat">
       <Position>6</Position>
       <DataType>double|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
+    <index id="268" parent="240" name="tblTestVo_pk_uindex">
+      <ColNames>pk</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="269" parent="240" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>pk</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="270" parent="240" name="tblTestVo_pk_uindex">
+      <ColNames>pk</ColNames>
+      <UnderlyingIndexName>tblTestVo_pk_uindex</UnderlyingIndexName>
+    </key>
   </database-model>
 </dataSource>

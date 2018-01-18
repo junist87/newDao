@@ -5,7 +5,7 @@ public abstract class Vo {
     @DbColumn(columnType = ColumnType.PRIMARYKEY, rwType = RwType.INSERTONLY)
     private String pk;
 
-    public String getPk() {
+    final public String getPk() {
         return pk;
     }
 }

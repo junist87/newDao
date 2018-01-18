@@ -1,6 +1,7 @@
 package com.ciaosgarage.newDao.sqlHandler.sqlMaker;
 
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.ColumnStmt;
 import com.ciaosgarage.newDao.vo.Column;
 import com.ciaosgarage.newDao.vo.RwType;
 
@@ -10,13 +11,13 @@ import java.util.Map;
 public class SqlMakerImpl implements SqlMaker {
 
     // 테이블 접두어 기본값
-    private String TablePrefix = "tbl";
+    private String tablePrefix = "tbl";
     // PrimaryKey 컬럼이름 기본값
     private String PrimaryKeyColumnName = "pk";
 
     // 기본설정값 수정
     public void setTablePrefix(String prefix) {
-        TablePrefix = prefix;
+        tablePrefix = prefix;
     }
 
     // 기본설정값 수정
@@ -25,34 +26,40 @@ public class SqlMakerImpl implements SqlMaker {
     }
 
     @Override
-    public String select(Map<String, Column> voMap, List<AttachStmt> attachStmts) {
-        return "SELECT * FROM " + TablePrefix + getTableName(voMap) + " " + getAttachStmtSql(attachStmts);
+    public String selectAll(Map<String, Column> voMap, List<AttachStmt> attachStmts) {
+        return "SELECT * FROM " + tablePrefix + getTableName(voMap) + " " + getAttachStmtSql(attachStmts);
+    }
+
+    @Override
+    public String select(Map<String, Column> voMap, ColumnStmt columnStmt, List<AttachStmt> attachStmts) {
+        return "SELECT " + columnStmt.getStatement() + " FROM "
+                + tablePrefix + getTableName(voMap) + " " + getAttachStmtSql(attachStmts);
     }
 
     @Override
     public String update(Map<String, Column> voMap) {
-        return "UPDATE " + TablePrefix + getTableName(voMap) + " SET " + getUpdateValues(voMap) +
+        return "UPDATE " + tablePrefix + getTableName(voMap) + " SET " + getUpdateValues(voMap) +
                 " " + getWherePrimaryKey(voMap);
     }
 
     @Override
     public String insert(Map<String, Column> voMap) {
-        return "INSERT INTO " + TablePrefix + getTableName(voMap) + " " + getInsertValue(voMap);
+        return "INSERT INTO " + tablePrefix + getTableName(voMap) + " " + getInsertValue(voMap);
     }
 
     @Override
     public String delete(Map<String, Column> voMap) {
-        return "DELETE FROM " + TablePrefix + getTableName(voMap) + " " + getWherePrimaryKey(voMap);
+        return "DELETE FROM " + tablePrefix + getTableName(voMap) + " " + getWherePrimaryKey(voMap);
     }
 
     @Override
     public String deleteAll(Map<String, Column> voMap) {
-        return "DELETE FROM " + TablePrefix + getTableName(voMap);
+        return "DELETE FROM " + tablePrefix + getTableName(voMap);
     }
 
     @Override
     public String count(Map<String, Column> voMap) {
-        return "SELECT COUNT(*) FROM " + TablePrefix + getTableName(voMap);
+        return "SELECT COUNT(*) FROM " + tablePrefix + getTableName(voMap);
     }
 
     private String getAttachStmtSql(List<AttachStmt> attachStmts) {

@@ -23,7 +23,7 @@ public interface SqlExecutor {
 
     /**
      * 데이터베이스에서 데이터를 1개 가져오는 메소드
-     * (select)
+     * (selectAll)
      *
      * @param voInfo     접근할 테이블의 정보를 가지고 있는 vo 객체의 class
      * @param sql        처리할 slq 구문
@@ -35,7 +35,7 @@ public interface SqlExecutor {
 
     /**
      * 데이터베이스에서 데이터를 여러개 가져오는 메소드
-     * (select)
+     * (selectAll)
      *
      * @param voInfo     접근할 테이블의 정보를 가지고 있는 vo 객체의 class
      * @param sql        처리할 slq 구문

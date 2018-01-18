@@ -4,7 +4,6 @@ import com.ciaosgarage.newDao.exceptions.CantAccessFieldException;
 import com.ciaosgarage.newDao.exceptions.CantConstructVoException;
 import com.ciaosgarage.newDao.exceptions.CantFindVoInfoException;
 import com.ciaosgarage.newDao.vo.*;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

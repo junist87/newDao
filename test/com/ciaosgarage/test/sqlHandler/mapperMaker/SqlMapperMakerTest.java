@@ -7,11 +7,10 @@ import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMakerImpl;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.ASWhere;
 import com.ciaosgarage.newDao.vo.Column;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
-import com.ciaosgarage.test.TestVo;
+import com.ciaosgarage.test.testVo.TestVO;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class SqlMapperMakerTest {
     @Before
     public void setUp() {
         // 테스트용 vo 객체 생성
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         vo.name = name;
         vo.age = age;
         vo.nickname = nickname;
@@ -51,11 +50,11 @@ public class SqlMapperMakerTest {
         vo.lat = lat;
 
         // pk 입력
-        VoHandler voHandler = Context.modules.voHandler;
+        VoHandler voHandler = Context.instance.voHandler;
         voHandler.setPk(vo, pk);
 
         // 테스트 준비물
-        this.voMap = Context.modules.voHandler.transformToMap(vo);
+        this.voMap = Context.instance.voHandler.transformToMap(vo);
 
         // 객체준비
         mapperMaker = new SqlMapperMakerImpl();
@@ -65,7 +64,7 @@ public class SqlMapperMakerTest {
     @Test
     public void getVoMapper() {
         Map<String, Object> mapper = mapperMaker.makeMapper(voMap);
-        Cryptor cryptor = Context.modules.cryptor;
+        Cryptor cryptor = Context.instance.cryptor;
 
         // 모든 컬럼의 갯수는 6개
         assertThat(mapper.size(), is(columnSize));
@@ -86,9 +85,9 @@ public class SqlMapperMakerTest {
         String critName = "ADAB";
         Integer critAge = 42;
         String critNickname = "CiaoLee";
-        String encryptedNickname = Context.modules.cryptor.encryption(critNickname);
+        String encryptedNickname = Context.instance.cryptor.encryption(critNickname);
 
-        ASWhere asWhere = new ASWhere(TestVo.class);
+        ASWhere asWhere = new ASWhere(TestVO.class);
         asWhere.addRangeValue("lat",critLat1, critLat2);
         asWhere.addAndValue("name", critName);
         asWhere.addOrValue("age", critAge);

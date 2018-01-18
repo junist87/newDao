@@ -1,9 +1,15 @@
 package com.ciaosgarage.newDao.context;
 
-import com.ciaosgarage.newDao.dao.Dao;
-import com.ciaosgarage.newDao.dao.DaoImpl;
+import com.ciaosgarage.newDao.daoService.DaoService;
+import com.ciaosgarage.newDao.daoService.DaoServiceImpl;
+import com.ciaosgarage.newDao.daoService.dao.Dao;
+import com.ciaosgarage.newDao.daoService.dao.DaoImpl;
+import com.ciaosgarage.newDao.daoService.seqTableHandler.SeqTableHandlerImpl;
+import com.ciaosgarage.newDao.exceptions.NotSupportedDatabaseException;
 import com.ciaosgarage.newDao.sqlExecutor.NamedParameterJdbcTemplateSqlExecutor;
 import com.ciaosgarage.newDao.sqlExecutor.SqlExecutor;
+import com.ciaosgarage.newDao.sqlVo.requsetHandler.MySqlRequestHandler;
+import com.ciaosgarage.newDao.sqlVo.requsetHandler.RequestHandler;
 import com.ciaosgarage.newDao.vo.cryptHandler.BasicCryptor;
 import com.ciaosgarage.newDao.vo.cryptHandler.Cryptor;
 import com.ciaosgarage.newDao.sqlExecutor.resultSetTranslator.ResultSetTranslatorImpl;
@@ -23,6 +29,9 @@ public class Context {
     // 테이블 기본 prefix
     private static String TABLE_PREFIX = "tbl";
 
+    // 데이터베이스 종류 기본값
+    private DatabaseType databaseType = DatabaseType.MYSQL;
+
     // 공개되는 객체
     public VoHandler voHandler;
     public DataSource dataSource;
@@ -30,10 +39,11 @@ public class Context {
     public SqlHandler sqlHandler;
     public Cryptor cryptor;
     public Dao dao;
+    public DaoService daoService;
 
 
     // 싱글턴 리스트
-    public final static Context modules = new Context();
+    public final static Context instance = new Context();
 
     private Context() {
         this.createBeans();
@@ -44,6 +54,7 @@ public class Context {
         this.dataSource = dataSource;
         sqlExecutor = createSqlExecutor();
         dao = createDao();
+        daoService = createDaoService();
     }
 
     // 새로운 암호화키 설정
@@ -56,6 +67,11 @@ public class Context {
     public void setTablePrefix(String prefix) {
         TABLE_PREFIX = prefix;
 
+    }
+
+    // 필수요소
+    public void setDatabaseType(DatabaseType databaseType) {
+        this.databaseType = databaseType;
     }
 
     /* ----------------------*/
@@ -73,6 +89,29 @@ public class Context {
     /* ----------------------*/
     /*  초기화 메소드 입력      */
     /* ----------------------*/
+
+    private DaoService createDaoService() {
+        SeqTableHandlerImpl tableHandler = new SeqTableHandlerImpl();
+        tableHandler.setVoHandler(voHandler);
+        tableHandler.setDao(dao);
+        tableHandler.setRequestHandler(createRequestHandler());
+
+        DaoServiceImpl daoService = new DaoServiceImpl();
+        daoService.setDao(dao);
+        daoService.setSeqTableHandler(tableHandler);
+        daoService.setVoHandler(voHandler);
+        return daoService;
+    }
+
+    private RequestHandler createRequestHandler() {
+        switch (databaseType) {
+            case MYSQL:
+                return new MySqlRequestHandler(null);
+            default:
+                throw new NotSupportedDatabaseException();
+        }
+    }
+
     private VoHandler createVoHandler() {
         return new VoHandlerImpl();
     }
@@ -103,7 +142,6 @@ public class Context {
 
         return sqlHandler;
     }
-
 
     private Dao createDao() {
         // Dao 를 동작시키기 위한 클래스 객체화

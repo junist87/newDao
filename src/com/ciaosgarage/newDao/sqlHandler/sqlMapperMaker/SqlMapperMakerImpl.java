@@ -2,6 +2,7 @@ package com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker;
 
 
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
+import com.ciaosgarage.newDao.sqlVo.columnStmt.ColumnStmt;
 import com.ciaosgarage.newDao.vo.Column;
 
 import java.util.HashMap;
@@ -31,9 +32,20 @@ public class SqlMapperMakerImpl implements SqlMapperMaker {
     }
 
     @Override
+    public Map<String, Object> makeMapper(ColumnStmt columnStmt) {
+        Map<String, Object> mapper = new HashMap<>();
+        for (Column column : columnStmt.getMapper()) {
+            // 컬럼에 대입할 데이터가 있을때만 추가한다
+            if (column.isExistValue()) mapper.put(column.getMapperName(), column.getMapperValue());
+        }
+        return mapper;
+    }
+
+    @Override
     public Map<String, Object> makeMapper(List<AttachStmt> stmts) {
         Map<String, Object> mapper = new HashMap<>();
         for (AttachStmt stmt : stmts) {
+            if (stmt.getMapper() == null) continue; // 맵퍼가 없다면 다음으로 넘어간다.
             for (Column column : stmt.getMapper()) {
 
                 // 컬럼에 대입할 데이터가 있을때만 추가한다

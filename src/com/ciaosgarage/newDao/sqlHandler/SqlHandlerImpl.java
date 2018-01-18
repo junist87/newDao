@@ -5,7 +5,6 @@ import com.ciaosgarage.newDao.sqlHandler.sqlMapperMaker.SqlMapperMaker;
 import com.ciaosgarage.newDao.sqlVo.SqlMapper;
 import com.ciaosgarage.newDao.sqlVo.attachStmt.AttachStmt;
 import com.ciaosgarage.newDao.vo.Column;
-import com.sun.tools.corba.se.idl.StringGen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class SqlHandlerImpl implements SqlHandler {
         String sql;
         switch (type) {
             case SELECT:
-                sql = sqlMaker.select(voMap, stmts);
+                sql = sqlMaker.selectAll(voMap, stmts);
                 break;
             case COUNT:
                 sql = sqlMaker.count(voMap);

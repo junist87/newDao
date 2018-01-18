@@ -1,14 +1,12 @@
 package com.ciaosgarage.test.column;
 
-import com.ciaosgarage.test.TestVo;
+import com.ciaosgarage.test.testVo.TestVO;
 import com.ciaosgarage.newDao.context.Context;
 
 import com.ciaosgarage.newDao.vo.Column;
-import com.sun.tools.corba.se.idl.constExpr.Times;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Map;
 
@@ -23,14 +21,14 @@ public class ColumnTest {
     private String name = "Junee";
     private Integer age = 32;
     private String nickname = "Ciao";
-    private Timestamp height = Timestamp.valueOf("2018-1-1");
+    private Timestamp height = Timestamp.valueOf("2018-1-1 00:00:00");
     private Double lat = 1.423;
 
 
     @Before
     public void setUp() {
         // 테스트용 vo 객체 생성
-       TestVo vo = new TestVo();
+       TestVO vo = new TestVO();
         vo.name = name;
         vo.age = age;
         vo.nickname = nickname;
@@ -38,8 +36,8 @@ public class ColumnTest {
         vo.lat = lat;
 
         // 테스트 준비물
-        this.voMap = Context.modules.voHandler.transformToMap(vo);
-        this.emptyVoMap = Context.modules.voHandler.transformToMap(TestVo.class);
+        this.voMap = Context.instance.voHandler.transformToMap(vo);
+        this.emptyVoMap = Context.instance.voHandler.transformToMap(TestVO.class);
     }
 
     @Test
@@ -59,7 +57,7 @@ public class ColumnTest {
         String encryptedColumnName = "nickname";
         String noCryptedColumnName = "name";
 
-        String encrytedValue = Context.modules.cryptor.encryption(nickname);
+        String encrytedValue = Context.instance.cryptor.encryption(nickname);
         String noCryptedValue = name;
 
         Column encryptedColumn = voMap.get(encryptedColumnName);
@@ -83,7 +81,7 @@ public class ColumnTest {
 
         // 암호화 대상컬럼인 경우 암호값을 넣으면 원래 값이 나와야 한다
         String temporaryStringValue = "DAdaedzdg";
-        String encrytedValue = Context.modules.cryptor.encryption(temporaryStringValue);
+        String encrytedValue = Context.instance.cryptor.encryption(temporaryStringValue);
         encryptedColumn.setResultSetValue(encrytedValue);
         assertThat(encryptedColumn.getValue(), is(temporaryStringValue));
 

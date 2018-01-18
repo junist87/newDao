@@ -27,7 +27,7 @@ public class Column implements Cloneable {
         this.mapperName = columnName;
         this.voInfo = voInfo;
         this.extractField(columnName);
-        this.cryptor = Context.modules.cryptor;
+        this.cryptor = Context.instance.cryptor;
 
     }
 

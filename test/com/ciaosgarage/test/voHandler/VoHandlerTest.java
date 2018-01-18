@@ -1,6 +1,6 @@
 package com.ciaosgarage.test.voHandler;
 
-import com.ciaosgarage.test.TestVo;
+import com.ciaosgarage.test.testVo.TestVO;
 import com.ciaosgarage.newDao.exceptions.CantAccessFieldException;
 import com.ciaosgarage.newDao.vo.*;
 import com.ciaosgarage.newDao.voHandler.VoHandler;
@@ -45,7 +45,7 @@ public class VoHandlerTest {
     @Test
     public void setPk() {
 
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         String pk = "ABCDE";
 
         // 객체는 기본적으로 pk를 가지지 않는다
@@ -64,7 +64,7 @@ public class VoHandlerTest {
 
     @Test
     public void getValue() {
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         String name = "Jun";
         Integer age = 32;
         String nickname = "Ciao";
@@ -81,7 +81,7 @@ public class VoHandlerTest {
 
     @Test(expected = CantAccessFieldException.class)
     public void getValueException() {
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
 
         // 존재하지 않는 컬럼이름 적용
         voHandler.getValue(vo, "ABCD");
@@ -90,7 +90,7 @@ public class VoHandlerTest {
 
     @Test
     public void setValue() {
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         String name = "Jun";
         Integer age = 32;
         String nickname = "Ciao";
@@ -108,7 +108,7 @@ public class VoHandlerTest {
 
     @Test(expected = CantAccessFieldException.class)
     public void setValueException() {
-        TestVo vo = new TestVo();
+        TestVO vo = new TestVO();
         // 존재하지 않는 필드 입력
         voHandler.setValue(vo, "ADEd", "AG");
     }
@@ -117,7 +117,7 @@ public class VoHandlerTest {
     @Test
     public void transformToList() {
 
-        TestVo tempVo = new TestVo();
+        TestVO tempVo = new TestVO();
 
         List<Column> list = voHandler.transformToList(tempVo);
         assertThat(list.size(), is(6));
@@ -131,10 +131,10 @@ public class VoHandlerTest {
 
     @Test
     public void transformToMapWithClass() throws Exception{
-        Map<String, Column> voMap = voHandler.transformToMap(TestVo.class);
+        Map<String, Column> voMap = voHandler.transformToMap(TestVO.class);
 
         assertThat(voMap.size(), is(6));
-        assertThat(voMap.get("pk").getVoInfo().getSimpleName(), is("TestVo"));
+        assertThat(voMap.get("pk").getVoInfo().getSimpleName(), is("TestVO"));
 
     }
 
@@ -161,7 +161,7 @@ public class VoHandlerTest {
         Timestamp createDate = Timestamp.valueOf("1987-9-24");
         Double lat = 123.2321;
 
-        TestVo tempVo = new TestVo();
+        TestVO tempVo = new TestVO();
         tempVo.name = name;
         tempVo.nickname = nickname;
         tempVo.age = age;
@@ -208,7 +208,7 @@ public class VoHandlerTest {
     @Test
     public void transformToMap() {
         // 컬럼 확인
-        Map<String, Column> list = voHandler.transformToMap(TestVo.class);
+        Map<String, Column> list = voHandler.transformToMap(TestVO.class);
         assertThat(list.size(), is(6));
         assertNotNull(list.get("pk"));
         assertNotNull(list.get("name"));
@@ -221,23 +221,23 @@ public class VoHandlerTest {
     @Test
     public void transformToVoList() {
         // 객체 생성
-        TestVo testVo = new TestVo();
+        TestVO testVO = new TestVO();
 
         String name = "Lee";
         String nickname = "CiaoLee";
         Integer age = 32;
         Timestamp date = Timestamp.valueOf("2018-9-24");
 
-        testVo.name = name;
-        testVo.nickname = nickname;
-        testVo.age = age;
-        testVo.createDate = date;
+        testVO.name = name;
+        testVO.nickname = nickname;
+        testVO.age = age;
+        testVO.createDate = date;
 
         // 리스트로 변환
-        List<Column> list = voHandler.transformToList(testVo);
+        List<Column> list = voHandler.transformToList(testVO);
 
         // 도메인으로 변환
-        TestVo cvtVo = (TestVo) voHandler.transformToVo(list);
+        TestVO cvtVo = (TestVO) voHandler.transformToVo(list);
 
         // 값확인
         assertThat(cvtVo.name, is(name));
@@ -250,7 +250,7 @@ public class VoHandlerTest {
     @Test
     public void transformToVoMap() {
         // 객체 생성
-        TestVo testVo = new TestVo();
+        TestVO testVO = new TestVO();
 
         String name = "Lee";
         String nickname = "CiaoLee";
@@ -259,7 +259,7 @@ public class VoHandlerTest {
 
 
         // 맵 변환
-        Map<String, Column> map = voHandler.transformToMap(TestVo.class);
+        Map<String, Column> map = voHandler.transformToMap(TestVO.class);
 
         // 데이터 입력
         map.get("name").setValue(name);
@@ -268,7 +268,7 @@ public class VoHandlerTest {
         map.get("createDate").setValue(createDate);
 
         // 도메인으로 변환
-        TestVo cvtVo = (TestVo) voHandler.transformToVo(map);
+        TestVO cvtVo = (TestVO) voHandler.transformToVo(map);
 
         // 값확인
         assertThat(cvtVo.name, is(name));

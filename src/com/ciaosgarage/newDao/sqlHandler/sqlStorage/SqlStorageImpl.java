@@ -1,11 +1,6 @@
 package com.ciaosgarage.newDao.sqlHandler.sqlStorage;
 
-import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@Repository
 public class SqlStorageImpl implements SqlStorage {
 //    Map<SqlIndex, String> storage;
 //
